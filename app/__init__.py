@@ -6,7 +6,10 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
     app.secret_key = 'flask_demo'
+
     jwt = JWTManager(app)
+
+    app.app_context().push()
 
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_data):
@@ -23,7 +26,10 @@ def create_app(config_class=Config):
     from app.api import flask_api
     app.register_blueprint(flask_api, url_prefix='/api/v1')
 
+    from app.oauth import oauth
+    app.register_blueprint(oauth, url_prefix='/oauth')
+
     return app
 
 if __name__ == "__main__":
-    create_app(config_class=Config).run(host="0.0.0.0", debug=False, port=8080,threaded=True)
+    create_app(config_class=Config).run(host="0.0.0.0", debug=False, port=8080,threaded=True,ssl_context=('static/ssl_key/cert.pem', 'static/ssl_key/key.pem'))
