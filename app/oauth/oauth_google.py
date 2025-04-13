@@ -1,8 +1,9 @@
 import flask_login
-from flask import Flask, redirect, request, url_for, session,current_app
-#from flask_login import LoginManager, login_user,login_required, logout_user
+from flask import Flask, redirect, request, url_for, session,current_app, flash
+from flask_login import LoginManager, login_user,login_required, logout_user
 from requests_oauthlib import OAuth2Session
 from . import oauth
+from model.models import *
 import os
 
 
@@ -46,8 +47,28 @@ def profile():
     user_id = str(user_info["id"])
     user_name = str(user_info["name"])
 
+    user = USER_INFO.query.filter_by(email=user_email).first()
 
-    return f'Hello, {user_info["name"]},{user_info["email"]}!'
+    if user is not None and user.group_id == 1:
+        login_user(user)
+        flash('login successfully')
+        print(session)
+        return redirect(url_for('main.index'))
+    else:
+        add_new_user = USER_INFO(user_name=user_name, email=user_email,group_id=1)
+        db.session.add(add_new_user)
+        db.session.commit()
+        login_user(user)
+        flash('welcome new comer! login successfully')
+        print(session)
+        return redirect(url_for('main.index'))
+
+
+
+
+    #return f'Hello, {user_info["name"]},{user_info["email"]}!'
+
+
 
 
 @oauth.route('/logout')
