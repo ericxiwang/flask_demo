@@ -44,8 +44,10 @@ def profile():
     user_info = oauth.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
     user_email = str(user_info["email"])
     user_id = str(user_info["id"])
+    user_name = str(user_info["name"])
 
-    return f'Hello, {user_info["email"]}!'
+
+    return f'Hello, {user_info["name"]},{user_info["email"]}!'
 
 
 @oauth.route('/logout')
