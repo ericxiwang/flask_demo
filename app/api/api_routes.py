@@ -1,6 +1,7 @@
 from flask import request,jsonify
 from app.api import flask_api
 from .algorithms import *
+from .list_operation import *
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import json
 @flask_api.route('/',methods=['POST'])
@@ -12,6 +13,9 @@ def index():
 @jwt_required()
 def categories():
     return "api-2"
+
+
+
 
 
 @flask_api.route('/auth', methods=['POST'])
@@ -30,6 +34,29 @@ def api_auth():
     else:
         help_info = {"user_name": "<email>", "user_password": "<psw>", "user_list": "[]"}
         return json.dumps(help_info)
+
+
+@flask_api.route('/list_output', methods=['POST','GET'])
+@jwt_required()
+def list_output_api():
+    try:
+        data = json.loads(request.data)
+        list_len = int(data['list_len'])
+
+        #a = list_operation()
+       # b = a.list_output(a.list_comprehension(list_len))
+        c = list_operation.list_comprehension(list_len)
+        print(c)
+
+        result = {'result':c}
+        return json.dumps(result)
+
+    except:
+
+        help_info = {"user_name": "<email>", "user_password": "<psw>","user_list": "[]"}
+        return json.dumps(help_info)
+
+
 
 @flask_api.route('/list_reverse_slice', methods=['POST','GET'])
 @jwt_required()
@@ -368,3 +395,21 @@ def search_insert_api():
 
          help_info = {"user_name": "<email>", "user_password": "<psw>", "user_list": "[]"}
          return json.dumps(help_info)
+
+
+@flask_api.route('/merge_the_tools', methods=['POST'])
+@jwt_required()
+def merge_the_tools_api():
+
+     try:
+         data = json.loads(request.data)
+         parentheses_string = data['']
+
+         result = {'result': valid_parentheses_stack(parentheses_string)}
+         return json.dumps(result)
+     except:
+
+         help_info = {"user_name": "<email>", "user_password": "<psw>", "user_list": "[]"}
+         return json.dumps(help_info)
+
+
