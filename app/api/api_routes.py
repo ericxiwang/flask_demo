@@ -9,10 +9,11 @@ import json
 def index():
     return "api---1"
 
-@flask_api.route('/api/')
-@jwt_required()
+@flask_api.route('/test/',methods=['POST'])
 def categories():
-    return "api-2"
+    hash_map = {"name":"Eric", "age": 999, "summary": "this is test api"}
+    return_test_value = jsonify(hash_map)
+    return return_test_value
 
 
 

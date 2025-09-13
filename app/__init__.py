@@ -3,6 +3,7 @@ from app.config import Config
 from app.extensions import db
 from model.models import *
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from flask_login import LoginManager, login_user,login_required, logout_user
 def create_app(config_class=Config):
@@ -11,6 +12,7 @@ def create_app(config_class=Config):
     app.secret_key = 'flask_demo'
     db.init_app(app)
 
+    CORS(app)
     ################### init flask login #################
     login_manager = LoginManager()
     login_manager.init_app(app)
