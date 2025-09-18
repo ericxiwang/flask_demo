@@ -30,5 +30,12 @@ class IMAGE_ALBUM(db.Model):
     album_description = db.Column(db.String(100), unique=False, nullable=False)
     __table_args__ = (db.UniqueConstraint('id', 'album_name'),)
 
+
+class PRODUCT_CATEGORY(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category_name = db.Column(db.String(50), unique=False, nullable=False)
+    category_desc = db.Column(db.String(150), unique=False, nullable=False)
+
+
 if __name__ == "__main__":
     print(os.path)
