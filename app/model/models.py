@@ -35,6 +35,28 @@ class PRODUCT_CATEGORY(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(50), unique=False, nullable=False)
     category_desc = db.Column(db.String(150), unique=False, nullable=False)
+class BUG_INFO(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    bug_title = db.Column(db.String(50), unique=False, nullable=False)
+    bug_desc = db.Column(db.String(150), unique=False, nullable=False)
+    bug_level = db.Column(db.Integer, unique=False, nullable=False)
+    bug_assignee = db.Column(db.String(150), unique=False, nullable=False)
+    bug_status = db.Column(db.String(150), unique=False, nullable=False)
+    bug_category = db.Column(db.String(150), unique=False, nullable=False)
+    bug_keywords = db.Column(db.String(150), unique=False, nullable=False)
+    bug_datatime = db.Column(db.String(150), unique=False, nullable=False)
+
+class TICKET_INFO(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ticket_title = db.Column(db.String(50), unique=False, nullable=False)
+    ticket_type = db.Column(db.String(150), unique=False, nullable=False)
+    ticket_description = db.Column(db.String(150), unique=False, nullable=False)
+    ticket_submitter = db.Column(db.String(150), unique=False, nullable=False)
+    ticket_datetime = db.Column(db.String(150), unique=False, nullable=False)
+    ticket_assignee = db.Column(db.String(150), unique=False, nullable=False)
+    ticket_status = db.Column(db.String(150), unique=False, nullable=False)
+    ticket_scope = db.Column(db.String(150), unique=False, nullable=False)
+
 
 
 if __name__ == "__main__":
