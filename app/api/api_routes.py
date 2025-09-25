@@ -68,7 +68,6 @@ def product_cate_edit(method):
             return jsonify("add item failed")
 
 
-
 @flask_api.route('/sse')
 def sse_events():
     def generate_events():

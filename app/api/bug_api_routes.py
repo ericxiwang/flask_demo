@@ -89,7 +89,19 @@ def a_dashboard_edit(method):
             return jsonify(data)
 
 
-
+@flask_api.route('/all_user/',methods=['POST'])
+def all_user():
+    user_list = []
+    all_users = USER_INFO.query.all()
+    for each_line in all_users:
+        each_user = {}
+        each_user["id"] = each_line.id
+        each_user["user_name"] = each_line.user_name
+        each_user["email"] = each_line.email
+        each_user["group_id"] = each_line.group_id
+        user_list.append(each_user)
+    print(user_list)
+    return jsonify(user_list)
 
 
 
