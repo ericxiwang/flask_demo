@@ -67,7 +67,7 @@ def a_dashboard_edit(method):
             current_new_record = TICKET_INFO(ticket_title=data['title'],
                                              ticket_description=data['desc'],
                                              ticket_status=data['status'],
-                                             ticket_assignee=data['submitter'],
+                                             ticket_assignee=data['assignee'],
                                              ticket_type=data['type'],
                                              ticket_submitter=data['submitter'])
             db.session.add(current_new_record)
@@ -87,6 +87,28 @@ def a_dashboard_edit(method):
 
             db.session.commit()
             return jsonify(data)
+
+
+
+
+@flask_api.route('/a_workflow_badge/',methods=['POST'])
+def a_workflow_badge():
+
+
+    new_tickets = TICKET_INFO.query.filter_by(ticket_status='new').count()
+    inprogress_tickets = TICKET_INFO.query.filter_by(ticket_status='inprogress').count()
+    review_tickets = TICKET_INFO.query.filter_by(ticket_status='review').count()
+    done_tickets = TICKET_INFO.query.filter_by(ticket_status='done').count()
+
+    AllTickets = {"NewTickets": new_tickets,
+                  "InProgressTickets": inprogress_tickets,
+                  "ReviewTickets": review_tickets,
+                  "DoneTickets": done_tickets
+                  }
+
+
+
+    return jsonify(AllTickets)
 
 
 @flask_api.route('/all_user/',methods=['POST'])
