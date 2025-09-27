@@ -31,21 +31,22 @@ def a_dashboard_main_datagrid():
                   }
     all_tickets = TICKET_INFO.query.all()
     for each_ticket in all_tickets:
-        candidate_ticket = {"id": each_ticket.id,
-                            "title": each_ticket.ticket_title,
-                            "type": each_ticket.ticket_type,
-                            "desc": each_ticket.ticket_description,
-                            "submitter": each_ticket.ticket_submitter,
-                            "status": each_ticket.ticket_status,
-                            "assignee": each_ticket.ticket_assignee}
+        candidate_ticket = {"ticket_id": each_ticket.id,
+                            "ticket_title": each_ticket.ticket_title,
+                            "ticket_type": each_ticket.ticket_type,
+                            "ticket_desc": each_ticket.ticket_description,
+                            "ticket_submitter": each_ticket.ticket_submitter,
+                            "ticket_datetime": each_ticket.ticket_datetime,
+                            "ticket_status": each_ticket.ticket_status,
+                            "ticket_assignee": each_ticket.ticket_assignee}
 
-        if  candidate_ticket["status"] == "new":
+        if  candidate_ticket["ticket_status"] == "new":
             NewTickets.append(candidate_ticket)
-        elif candidate_ticket["status"] == "inprogress":
+        elif candidate_ticket["ticket_status"] == "inprogress":
             InProgressTickets.append(candidate_ticket)
-        elif candidate_ticket["status"] == "review":
+        elif candidate_ticket["ticket_status"] == "review":
             ReviewTickets.append(candidate_ticket)
-        elif candidate_ticket["status"] == "done":
+        elif candidate_ticket["ticket_status"] == "done":
             DoneTickets.append(candidate_ticket)
         else:
             pass
@@ -55,21 +56,48 @@ def a_dashboard_main_datagrid():
 
 
     return jsonify(AllTickets)
+@flask_api.route('/a_workflow_ticketlist/<string:current_user>',methods=['GET'])
+def a_workflow_ticketlist(current_user):
+    return_list = []
 
+    if request.method == "GET":
+        if current_user != 'all':
+
+
+            all_selected_tickets = TICKET_INFO.query.filter_by(ticket_assignee=current_user).all()
+
+
+        elif current_user == 'all':
+            all_selected_tickets = TICKET_INFO.query.all()
+        else:
+            pass
+
+        for each_ticket in all_selected_tickets:
+            candidate_ticket = {"id": each_ticket.id,
+                                "title": each_ticket.ticket_title,
+                                "type": each_ticket.ticket_type,
+                                "desc": each_ticket.ticket_description,
+                                "submitter": each_ticket.ticket_submitter,
+                                "status": each_ticket.ticket_status,
+                                "assignee": each_ticket.ticket_assignee}
+            return_list.append(candidate_ticket)
+
+    return jsonify(return_list)
 @flask_api.route('/a_dashboard_ops/<string:method>',methods=['POST'])
 def a_dashboard_edit(method):
 
     if method == "new":
         if request.is_json:
             data = request.get_json()
-            print(data['title'])
+            print(data['ticket_title'])
 
-            current_new_record = TICKET_INFO(ticket_title=data['title'],
-                                             ticket_description=data['desc'],
-                                             ticket_status=data['status'],
-                                             ticket_assignee=data['assignee'],
-                                             ticket_type=data['type'],
-                                             ticket_submitter=data['submitter'])
+            current_new_record = TICKET_INFO(ticket_title=data['ticket_title'],
+                                             ticket_description=data['ticket_desc'],
+                                             ticket_status=data['ticket_status'],
+                                             ticket_assignee=data['ticket_assignee'],
+                                             ticket_type=data['ticket_type'],
+                                             ticket_submitter=data['ticket_submitter'],
+                                             ticket_datetime=data['ticket_datetime'])
             db.session.add(current_new_record)
             db.session.commit()
             return jsonify(data)
@@ -79,11 +107,12 @@ def a_dashboard_edit(method):
         if request.is_json:
             data = request.get_json()
 
-            query_from_db = TICKET_INFO.query.filter_by(id=int(data['id'])).first()
-            query_from_db.ticket_title = data['title']
-            query_from_db.ticket_description = data['desc']
-            query_from_db.ticket_status = data['status']
-            query_from_db.ticket_submitter = data['submitter']
+            query_from_db = TICKET_INFO.query.filter_by(id=int(data['ticket_id'])).first()
+            query_from_db.ticket_title = data['ticket_title']
+            query_from_db.ticket_description = data['ticket_desc']
+            query_from_db.ticket_status = data['ticket_status']
+            query_from_db.ticket_type = data['ticket_type']
+            query_from_db.ticket_submitter = data['ticket_submitter']
 
             db.session.commit()
             return jsonify(data)
