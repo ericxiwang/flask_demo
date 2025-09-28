@@ -45,6 +45,7 @@ class BUG_INFO(db.Model):
     bug_category = db.Column(db.String(150), unique=False, nullable=False)
     bug_keywords = db.Column(db.String(150), unique=False, nullable=False)
     bug_datatime = db.Column(db.String(150), unique=False, nullable=False)
+    bug_project = db.Column(db.Integer, unique=False, nullable=False)
 
 class TICKET_INFO(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +58,11 @@ class TICKET_INFO(db.Model):
     ticket_status = db.Column(db.String(150), unique=False, nullable=False)
     ticket_scope = db.Column(db.String(150), unique=False, nullable=False)
 
+class PROJECT_INFO(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_name = db.Column(db.String(50), unique=False, nullable=False)
+    project_desc = db.Column(db.String(150), unique=False, nullable=False)
+    project_owner = db.Column(db.String(50), unique=False, nullable=False)
 
 
 if __name__ == "__main__":
