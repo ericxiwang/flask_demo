@@ -44,7 +44,7 @@ class BUG_INFO(db.Model):
     bug_status = db.Column(db.String(150), unique=False, nullable=False)
     bug_category = db.Column(db.String(150), unique=False, nullable=False)
     bug_keywords = db.Column(db.String(150), unique=False, nullable=False)
-    bug_datatime = db.Column(db.String(150), unique=False, nullable=False)
+    bug_datetime = db.Column(db.String(150), unique=False, nullable=False)
     bug_project = db.Column(db.Integer, unique=False, nullable=False)
 
 class TICKET_INFO(db.Model):

@@ -19,7 +19,7 @@ def project_list():
 
 @flask_api.route('/b_dashboard_main',methods=['POST'])
 
-def b_bashboard_query():
+def b_dashboard_query():
     if request.method == "POST" and request.is_json:
         project_list = request.get_json()['key_words']
         dashboard_list_object = []
@@ -43,3 +43,41 @@ def b_bashboard_query():
 
 
     return jsonify(dashboard_list_object)
+
+
+
+@flask_api.route('/b_dashboard_ops/<string:method>',methods=['POST'])
+def b_dashboard_ops(method):
+
+    if method == "new":
+        if request.is_json:
+            data = request.get_json()
+            print(data['bug_title'])
+
+            current_new_record = BUG_INFO(bug_title=data['bug_title'],
+                                          bug_desc=data['bug_desc'],
+                                          bug_status=data['bug_status'],
+                                          bug_assignee=data['bug_assignee'],
+                                          bug_level=data['bug_level'],
+                                          bug_category=data['bug_category'],
+                                          bug_datetime=data['bug_datetime'],
+                                          bug_project=data['bug_project'])
+            db.session.add(current_new_record)
+            db.session.commit()
+            return jsonify(data)
+    elif method == "edit":
+
+        print("update bug ticket info")
+        if request.is_json:
+            data = request.get_json()
+
+            query_from_db = BUG_INFO.query.filter_by(id=int(data['ticket_id'])).first()
+            query_from_db.ticket_title = data['ticket_title']
+            query_from_db.ticket_description = data['ticket_desc']
+            query_from_db.ticket_status = data['ticket_status']
+            query_from_db.ticket_type = data['ticket_type']
+            query_from_db.ticket_submitter = data['ticket_submitter']
+
+            db.session.commit()
+            return jsonify(data)
+
