@@ -4,8 +4,7 @@ from model.models import *
 from flask_login import login_user,login_required, logout_user
 import os,json,uuid
 
-@main.route('/',methods=['POST', 'GET'])
-
+@main.route('/oauth',methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         email = request.form['email']

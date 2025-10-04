@@ -7,7 +7,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 import json,time
 from model.models import *
 @flask_api.route('/',methods=['POST'])
-@jwt_required()
+
 def index():
     return "api---1"
 
@@ -18,7 +18,8 @@ def categories():
     return return_test_value
 
 
-@flask_api.route('/a_dashboard_main/',methods=['POST'])
+@flask_api.route('/a_dashboard_main/',methods=['POST','OPTIONS'])
+@jwt_required()
 def a_dashboard_main_datagrid():
     NewTickets = []
     InProgressTickets = []
@@ -57,6 +58,7 @@ def a_dashboard_main_datagrid():
 
     return jsonify(AllTickets)
 @flask_api.route('/a_workflow_ticketlist/<string:current_user>',methods=['GET'])
+@jwt_required()
 def a_workflow_ticketlist(current_user):
     return_list = []
 

@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, url_for, request
+from flask import Flask, flash, redirect, url_for, request, send_from_directory
 from app.config import Config
 from app.extensions import db
 from model.models import *
@@ -7,12 +7,13 @@ from flask_cors import CORS
 
 from flask_login import LoginManager, login_user,login_required, logout_user
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="build/static",template_folder="build")
     app.config.from_object(config_class)
     app.secret_key = 'flask_demo'
     db.init_app(app)
 
     CORS(app)
+
     ################### init flask login #################
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -25,6 +26,15 @@ def create_app(config_class=Config):
     def handle_needs_login():
         flash("You have to be logged in to access this page.")
         return redirect(url_for('main.login', next=request.endpoint))
+
+
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def serve_react(path):
+        if path != "" and os.path.exists(os.path.join(app.template_folder, path)):
+            return send_from_directory(app.template_folder, path)
+        else:
+            return send_from_directory(app.template_folder, "index.html")
 
     #################### init API JWT #################
 
@@ -43,14 +53,14 @@ def create_app(config_class=Config):
     # Initialize Flask extensions here
 
     # Register blueprints here
-    from app.main import main
-    app.register_blueprint(main)
+    #from app.main import main
+    #app.register_blueprint(main)
 
     from app.api import flask_api
     app.register_blueprint(flask_api, url_prefix='/api/v1')
 
-    from app.oauth import oauth
-    app.register_blueprint(oauth, url_prefix='/oauth')
+    #from app.oauth import oauth
+    #app.register_blueprint(oauth, url_prefix='/oauth')
 
     return app
 

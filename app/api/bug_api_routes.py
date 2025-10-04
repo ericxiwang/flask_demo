@@ -34,6 +34,7 @@ def b_dashboard_query():
                         "bug_status": each_item.bug_status,
                         "bug_category": each_item.bug_category,
                         "bug_project": each_item.bug_project,
+                        "bug_datetime": each_item.bug_datetime
 
                         }
             dashboard_list_object.append(each_bug)
@@ -71,12 +72,16 @@ def b_dashboard_ops(method):
         if request.is_json:
             data = request.get_json()
 
-            query_from_db = BUG_INFO.query.filter_by(id=int(data['ticket_id'])).first()
-            query_from_db.ticket_title = data['ticket_title']
-            query_from_db.ticket_description = data['ticket_desc']
-            query_from_db.ticket_status = data['ticket_status']
-            query_from_db.ticket_type = data['ticket_type']
-            query_from_db.ticket_submitter = data['ticket_submitter']
+            query_from_db = BUG_INFO.query.filter_by(id=int(data['id'])).first()
+            query_from_db.bug_title = data['bug_title']
+            query_from_db.bug_desc = data['bug_desc']
+            query_from_db.bug_status = data['bug_status']
+            query_from_db.bug_assignee = data['bug_assignee']
+            query_from_db.bug_level = data['bug_level']
+
+
+
+
 
             db.session.commit()
             return jsonify(data)
