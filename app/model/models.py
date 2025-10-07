@@ -12,6 +12,18 @@ class USER_INFO(db.Model, UserMixin):
     user_password = db.Column(db.String(150), unique=False)
     group_id = db.Column(db.String(20),unique=False)
 
+    def __repr__(self):
+        return '<User %r>' % self.username
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_name': self.user_name,
+            'email': self.email,
+            'user_password':self.user_password,
+            'group_id':self.group_id
+        }
+
 class USER_GROUP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(50), unique=False, nullable=False)

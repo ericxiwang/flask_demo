@@ -27,7 +27,7 @@ def create_app(config_class=Config):
         flash("You have to be logged in to access this page.")
         return redirect(url_for('main.login', next=request.endpoint))
 
-
+    '''
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     def serve_react(path):
@@ -35,7 +35,7 @@ def create_app(config_class=Config):
             return send_from_directory(app.template_folder, path)
         else:
             return send_from_directory(app.template_folder, "index.html")
-
+    '''
     #################### init API JWT #################
 
     jwt = JWTManager(app)

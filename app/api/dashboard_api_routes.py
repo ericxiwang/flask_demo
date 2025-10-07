@@ -7,19 +7,33 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 import json,time
 from model.models import *
 @flask_api.route('/',methods=['POST'])
-
 def index():
     return "api---1"
+@flask_api.route('/auth', methods=['POST'])
+def api_auth():
+    data = json.loads(request.data)
+    if request.method == 'POST':
+        user_name = data['user_name']
+        user_password = data['user_password']
+        user = "admin@admin.com"
 
-@flask_api.route('/test/',methods=['POST'])
+        if user is not None and user_password == "1234":
+            access_token = create_access_token(identity=user_name)
+            return jsonify(access_token=access_token), 200
+        else:
+            return jsonify({"message": "can not found user, auth failed"})
+    else:
+        help_info = {"user_name": "<email>", "user_password": "<psw>", "user_list": "[]"}
+        return json.dumps(help_info)
+@flask_api.route('/test',methods=['POST'])
 def categories():
     hash_map = {"name":"Eric", "age": 999, "summary": "this is test api"}
     return_test_value = jsonify(hash_map)
     return return_test_value
 
 
-@flask_api.route('/a_dashboard_main/',methods=['POST','OPTIONS'])
-@jwt_required()
+@flask_api.route('/a_dashboard_main',methods=['POST','OPTIONS'])
+
 def a_dashboard_main_datagrid():
     NewTickets = []
     InProgressTickets = []
@@ -58,7 +72,7 @@ def a_dashboard_main_datagrid():
 
     return jsonify(AllTickets)
 @flask_api.route('/a_workflow_ticketlist/<string:current_user>',methods=['GET'])
-@jwt_required()
+
 def a_workflow_ticketlist(current_user):
     return_list = []
 
@@ -122,9 +136,8 @@ def a_dashboard_edit(method):
 
 
 
-@flask_api.route('/a_workflow_badge/',methods=['POST'])
+@flask_api.route('/a_workflow_badge',methods=['POST'])
 def a_workflow_badge():
-
 
     new_tickets = TICKET_INFO.query.filter_by(ticket_status='new').count()
     inprogress_tickets = TICKET_INFO.query.filter_by(ticket_status='inprogress').count()
@@ -142,7 +155,7 @@ def a_workflow_badge():
     return jsonify(AllTickets)
 
 
-@flask_api.route('/all_user/',methods=['POST'])
+@flask_api.route('/all_user',methods=['POST','GET'])
 def all_user():
     user_list = []
     all_users = USER_INFO.query.all()
@@ -215,19 +228,3 @@ def sse_events():
 
 
 
-@flask_api.route('/auth', methods=['POST'])
-def api_auth():
-    data = json.loads(request.data)
-    if request.method == 'POST':
-        user_name = data['user_name']
-        user_password = data['user_password']
-        user = "admin@admin.com"
-
-        if user is not None and user_password == "1234":
-            access_token = create_access_token(identity=user_name)
-            return jsonify(access_token=access_token), 200
-        else:
-            return jsonify({"message": "can not found user, auth failed"})
-    else:
-        help_info = {"user_name": "<email>", "user_password": "<psw>", "user_list": "[]"}
-        return json.dumps(help_info)
