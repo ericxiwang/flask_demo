@@ -4,7 +4,7 @@ LABEL maintainer="Eric Wang <gowest.wang@gmail.com>"
 
 COPY ./app /opt/app
 WORKDIR /opt
-RUN yes | pip install -r requirements.txt
+RUN yes | pip install -r /opt/app/requirements.txt
 ENV PYTHONPATH=/opt/app
 
 EXPOSE 8088/tcp
