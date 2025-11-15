@@ -1,0 +1,23 @@
+{
+  "/api/v1/auth": {
+    "user_name": "admin@admin.com",
+    "user_password": "1234"
+  },
+  "/api/v1/project_info": {
+  "projects":
+    [
+    {
+        "project_id": 1,
+        "project_name": "frontend api"
+    },
+    {
+        "project_id": 2,
+        "project_name": "backend api"
+    },
+    {
+        "project_id": 3,
+        "project_name": "devops"
+    }
+]
+  }
+}
