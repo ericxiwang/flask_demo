@@ -16,15 +16,29 @@ def user_ops(method):
                                         )
             db.session.add(new_user_record)
             db.session.commit()
-        return jsonify(data)
+            get_db_return = USER_INFO.query.filter_by(email=data['email']).first()
+            get_db_return = get_db_return.to_dict()
+            return jsonify(get_db_return)
     elif method == "delete":
         if request.method == "POST":
             user_to_del = json.loads(request.data)
             print(user_to_del)
             user_to_delete = USER_INFO.query.get(user_to_del['id'])
-            db.session.delete(user_to_delete)
-            db.session.commit()
-        return jsonify({"user": user_to_del['id']})
+            if not user_to_delete:
+                return jsonify({"user": "error-notfound"})
+            else:
+                db.session.delete(user_to_delete)
+                db.session.commit()
+
+                get_db_return = USER_INFO.query.filter_by(id=user_to_del['id']).first()
+                if not get_db_return:
+                    return jsonify({"user": "deleted"})
+                else:
+                    get_db_return = get_db_return.to_dict()
+                    return jsonify(get_db_return)
+
+
+
 
     elif method == "update":
         if request.method == "POST":
@@ -34,7 +48,11 @@ def user_ops(method):
             selected_user.email = data['email']
             selected_user.group_id = data['group_id']
             db.session.commit()
-            return jsonify(data)
+
+            get_db_return = USER_INFO.query.filter_by(id=data['id']).first()
+            get_db_return = get_db_return.to_dict()
+
+            return jsonify(get_db_return)
 
 
     elif method == "all":

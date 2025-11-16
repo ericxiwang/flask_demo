@@ -6,18 +6,38 @@
   "/api/v1/project_info": {
   "projects":
     [
+      {
+          "project_id": 1, "project_name": "frontend api"
+      },
+      {
+          "project_id": 2, "project_name": "backend api"
+      },
+      {
+          "project_id": 3, "project_name": "devops"
+      }
+    ]
+  },
+  "/api/v1/all_user": [
     {
-        "project_id": 1,
-        "project_name": "frontend api"
+        "email": "qa_engineer@test.com", "group_id": 1, "id": 1, "user_name": "QA001"
     },
     {
-        "project_id": 2,
-        "project_name": "backend api"
+        "email": "admin@admin.com", "group_id": 3, "id": 2, "user_name": "admin"
     },
     {
-        "project_id": 3,
-        "project_name": "devops"
+        "email": "manager@gmail.com", "group_id": 1, "id": 3, "user_name": "manager"
+    },
+    {
+        "email": "dev_engineer@test.com", "group_id": 1, "id": 4, "user_name": "DEV001"
+    },
+    {
+        "email": "gowest.wang@gmail.com", "group_id": 1, "id": 5, "user_name": "xi wang"
     }
-]
-  }
+],
+  "/api/v1/user_ops/new": {
+    "email": "test_newuser@email.com", "group_id": 1, "user_name": "test_newuser", "user_password": "1234"
+    },
+  "/api/v1/user_ops/update": {
+    "email": "test_updateuser@email.com", "group_id": 2, "user_name": "test_updateuser", "user_password": "1234", "id": 0
+    }
 }

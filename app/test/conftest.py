@@ -28,6 +28,11 @@ def api_authentication(request):
         'Authorization': Token
     }
     return api_headers
+@pytest.fixture(scope="session")
+def local_json_file():
+    with open('dummy_data.json', 'r') as file:
+        test_data_template = json.load(file)
+        yield test_data_template
 
 @pytest.fixture(scope="session")
 def base_url(request):
