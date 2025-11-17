@@ -116,7 +116,9 @@ def a_dashboard_edit(method):
                                              ticket_datetime=data['ticket_datetime'])
             db.session.add(current_new_record)
             db.session.commit()
-            return jsonify(data)
+            print(current_new_record.id)
+
+            return jsonify({"ticket_id":current_new_record.id})
     elif method == "edit":
 
         print("update ticket info")

@@ -39,5 +39,23 @@
     },
   "/api/v1/user_ops/update": {
     "email": "test_updateuser@email.com", "group_id": 2, "user_name": "test_updateuser", "user_password": "1234", "id": 0
-    }
+    },
+  "/api/v1/a_dashboard_ops/new": {
+    "ticket_title":"auto_test_title",
+    "ticket_desc":"auto_test_descption",
+    "ticket_status": "new",
+    "ticket_assignee": "admin",
+    "ticket_type": "task",
+    "ticket_submitter": "admin",
+    "ticket_datetime": "Sun Nov 16 2025"
+  },
+  "/api/v1/a_dashboard_ops/edit": {
+    "ticket_title":"edit_test_title",
+    "ticket_desc":"edit_test_descption",
+    "ticket_status": "review",
+    "ticket_assignee": "admin",
+    "ticket_type": "task",
+    "ticket_submitter": "admin",
+    "ticket_datetime": "Sun Nov 16 2026"
+  }
 }
