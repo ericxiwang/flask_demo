@@ -47,7 +47,7 @@
     "ticket_assignee": "admin",
     "ticket_type": "task",
     "ticket_submitter": "admin",
-    "ticket_datetime": "Sun Nov 16 2025"
+    "ticket_datetime": "Tue Nov 18 2025"
   },
   "/api/v1/a_dashboard_ops/edit": {
     "ticket_title":"edit_test_title",
@@ -56,6 +56,32 @@
     "ticket_assignee": "admin",
     "ticket_type": "task",
     "ticket_submitter": "admin",
-    "ticket_datetime": "Sun Nov 16 2026"
+    "ticket_datetime": "Tue Nov 18 2026"
+  },
+  "/api/v1/a_workflow_ticketlist/": {
+    "All Tickets": "all",
+    "QA001": "qa_engineer@test.com",
+    "admin": "admin@admin.com",
+    "manager": "manager@gmail.com",
+    "DEV001": "dev_engineer@test.com"
+  },
+  "/api/v1/b_dashboard_ops/new": {
+    "bug_title":"auto_test_b_dashboard_title",
+    "bug_desc":"auto_test_b_dashboard_desc",
+    "bug_status": "new",
+    "bug_assignee": "admin@admin.com",
+    "bug_level": "low",
+    "bug_category": "",
+    "bug_datetime": "Tue Nov 18 2025",
+    "bug_project": ""
+  },
+  "/api/v1/b_dashboard_ops/edit": {
+    "bug_title":"edit_b_dashboard_title",
+    "bug_desc":"edit_test_b_dashboard_desc",
+    "bug_status": "inprogress",
+    "bug_assignee": "admin@admin.com",
+    "bug_level": "minor",
+    "bug_category": "",
+    "bug_project": ""
   }
 }

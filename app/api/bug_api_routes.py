@@ -65,7 +65,7 @@ def b_dashboard_ops(method):
                                           bug_project=data['bug_project'])
             db.session.add(current_new_record)
             db.session.commit()
-            return jsonify(data)
+            return jsonify({"ticket_id": current_new_record.id})
     elif method == "edit":
 
         print("update bug ticket info")

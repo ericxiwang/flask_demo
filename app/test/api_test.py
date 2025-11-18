@@ -14,18 +14,8 @@ def test_api_project_info(test_case_name,api_authentication, base_url):
     for each_line in get_json:
         print(each_line)
     #assert get_json['result'] == test_list
-@pytest.mark.parametrize("test_case_name", ["/api/v1/a_workflow_badge"])
-@pytest.mark.parametrize(('json_key','json_value'), [("DoneTickets",3),
-                                                 ("InProgressTickets",6),
-                                                 ("NewTickets",15),
-                                                 ("ReviewTickets",2)])
-def test_api_a_workflow_badge(test_case_name,api_authentication, base_url,json_key,json_value):
-    api_url = base_url + test_case_name
-    response = requests.request("POST", api_url, headers=api_authentication, verify=False)
-    get_json = response.json()
-    #verify each quantity of tickets
-    #assert get_json[json_key] == json_value
 
+################################### USER MANAGEMENT #####################################
 
 @pytest.mark.user_management
 @pytest.mark.parametrize("test_case_name", ["/api/v1/all_user"])
@@ -102,3 +92,104 @@ def test_api_dashboard_edit(test_case_name,api_authentication,base_url,local_jso
     api_url = base_url + test_case_name
     print("++++++++++++++",a_dashboard_share_data["new_id"],update_ticket_data)
     response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(update_ticket_data), verify=False)
+
+############################## A_WORKFLOW_PAGE ############################
+@pytest.mark.a_workflow
+@pytest.mark.parametrize("test_case_name", ["/api/v1/a_workflow_badge"])
+@pytest.mark.parametrize(('json_key','json_value'), [("DoneTickets",3),
+                                                 ("InProgressTickets",6),
+                                                 ("NewTickets",15),
+                                                 ("ReviewTickets",2)])
+def test_api_a_workflow_badge(test_case_name,api_authentication, base_url,json_key,json_value):
+    api_url = base_url + test_case_name
+    response = requests.request("POST", api_url, headers=api_authentication, verify=False)
+    get_json = response.json()
+    #verify each quantity of tickets
+    #assert get_json[json_key] == json_value
+
+
+@pytest.mark.a_workflow
+@pytest.mark.parametrize("test_case_name", ["/api/v1/a_workflow_ticketlist/all"])
+def test_api_a_workflow_ticketlist_all(test_case_name,api_authentication,base_url):
+    api_url = base_url + test_case_name
+    response = requests.request("GET", api_url, headers=api_authentication, verify=False)
+    print(len(response.json()))
+    assert len(response.json()) == 44
+
+
+@pytest.mark.a_workflow
+@pytest.mark.parametrize("test_case_name", ["/api/v1/a_workflow_ticketlist/"])
+@pytest.mark.parametrize("user", ["All Tickets","QA001", "admin", "manager", "DEV001"])
+def test_api_a_workflow_ticketlist_users(test_case_name, api_authentication, base_url, local_json_file, user):
+    user_list = local_json_file[test_case_name]
+    api_url = base_url + test_case_name + str(user_list[user])
+    response = requests.request("GET", api_url, headers=api_authentication, verify=False)
+    print(len(response.json()))
+    assert len(response.json()) >= 0
+
+
+############################ BUG DASHBOARD #################################
+b_dashboard_share = {}
+@pytest.mark.b_dashboard
+@pytest.mark.parametrize("test_case_name", ["/api/v1/project_info"])
+@pytest.mark.parametrize("project_name", ["frontend api","backend api", "devops"])
+def test_api_b_dashboard_project_info(test_case_name, api_authentication, base_url, project_name):
+
+    api_url = base_url + test_case_name
+    response = requests.request("GET", api_url, headers=api_authentication, verify=False)
+    project_list = response.json()
+    found = False
+    for each_project in project_list:
+
+
+        print("@@@@@@@@@@@@@@@",each_project,project_name)
+        if each_project["project_name"] == project_name:
+            found = True
+            break
+    assert found
+@pytest.mark.b_dashboard
+@pytest.mark.parametrize("test_case_name", ["/api/v1/b_dashboard_main"])
+@pytest.mark.parametrize("project_name", ["frontend api","backend api", "devops"])
+def test_api_b_dashboard_project_info(test_case_name, api_authentication, base_url, project_name):
+    api_url = base_url + test_case_name
+    data = {"key_words":[project_name]}
+    response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(data),verify=False)
+    assert len(response.json()) > 0
+
+share_bug_ids = []   # transfer new created bug ids for following test cases
+@pytest.mark.b_dashboard
+@pytest.mark.parametrize("test_case_name", ["/api/v1/b_dashboard_ops/new"])
+@pytest.mark.parametrize("project_name", ["frontend api","backend api", "devops"])
+def test_api_b_dashboard_new(test_case_name, api_authentication, base_url, project_name,local_json_file):
+    api_url = base_url + test_case_name
+    get_template = local_json_file[test_case_name]
+    get_template['bug_project'] = project_name
+    get_template['bug_keywords'] = project_name
+    get_template['bug_category'] = project_name
+    response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(get_template),verify=False)
+    print(response.json())
+    assert response.json()['ticket_id'] > 0
+    share_bug_ids.append(response.json()['ticket_id'])
+    print(share_bug_ids)
+
+@pytest.mark.b_dashboard
+@pytest.mark.parametrize("test_case_name", ["/api/v1/b_dashboard_ops/edit"])
+def test_api_b_dashboard_edit(test_case_name, api_authentication, base_url,local_json_file):
+    api_url = base_url + test_case_name
+    get_template = local_json_file[test_case_name]
+    get_template['bug_title'] = get_template['bug_title']
+    get_template['bug_desc'] = get_template['bug_desc']
+    get_template['bug_status'] = get_template['bug_status']
+    get_template['bug_level'] = get_template['bug_level']
+    all_pass = True
+    for bug_id in share_bug_ids:
+
+        get_template['id'] = bug_id
+        response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(get_template),verify=False)
+        print(response.json())
+        if (response.json()['bug_title'] != get_template['bug_title']
+                and response.json()['bug_desc'] != get_template['bug_desc']
+                and response.json()['bug_status'] != get_template['bug_status']
+                and response.json()['bug_level'] != get_template['bug_level']):
+            all_pass = False
+    assert all_pass
