@@ -11,20 +11,35 @@ def index():
     return "api---1"
 @flask_api.route('/auth', methods=['POST'])
 def api_auth():
-    data = json.loads(request.data)
-    if request.method == 'POST':
-        user_name = data['user_name']
-        user_password = data['user_password']
-        user = "admin@admin.com"
 
-        if user is not None and user_password == "1234":
-            access_token = create_access_token(identity=user_name)
-            return jsonify(access_token=access_token), 200
+
+    if request.method == 'POST':
+        data = request.get_json()
+
+
+        email = data.get('email').strip()
+        user_password = data.get('user_password').strip()
+
+
+        if email and user_password:
+            get_current_user_password = USER_INFO.query.filter_by(email=email).first()
+
+            if get_current_user_password and get_current_user_password.user_password == user_password:
+
+                access_token = create_access_token(identity=email)
+                return jsonify(access_token=access_token), 200
+            else:
+                return jsonify({"message": "wrong username or password"})
         else:
-            return jsonify({"message": "can not found user, auth failed"})
+            return jsonify({"message": "input can not be empty"})
     else:
         help_info = {"user_name": "<email>", "user_password": "<psw>", "user_list": "[]"}
         return json.dumps(help_info)
+
+
+
+
+
 @flask_api.route('/test',methods=['POST'])
 def categories():
     hash_map = {"name":"Eric", "age": 999, "summary": "this is test api"}
@@ -178,41 +193,53 @@ def all_user():
 
 
 
-@flask_api.route('/product_cate_list/<string:method>',methods=['POST'])
+@flask_api.route('/project_list/<string:method>',methods=['POST'])
 def product_cate_edit(method):
     print(method)
 
 
     if method == "query":
-        cate_list = []
-        all_categories = BUG_INFO.query.all()
-        for each_line in all_categories:
+        project_list = []
+        all_projects = PROJECT_INFO.query.all()
+        for each_line in all_projects:
             new_grid = {}
             new_grid["id"] = each_line.id
-            new_grid["bug_title"] = each_line.bug_title
-            new_grid["bug_desc"] = each_line.bug_desc
-            cate_list.append(new_grid)
-        print(cate_list)
+            new_grid["project_name"] = each_line.project_name
+            new_grid["project_desc"] = each_line.project_desc
+            new_grid["project_owner"] = each_line.project_owner
+            project_list.append(new_grid)
+        print(project_list)
 
 
 
-        return jsonify(cate_list)
+        return jsonify(project_list)
     elif method == "add":
-        if request.is_json:
-            data = request.json['new_cate']
-            print(data)
-            for each_line in data:
-                print(each_line)
-                name = each_line['name']
-                description = each_line['description']
-                current_new_record = PRODUCT_CATEGORY(category_name=name,category_desc=description)
-                db.session.add(current_new_record)
+        if request.method == "POST":
+            data = json.loads(request.data)
+            new_project = PROJECT_INFO(project_name=data['project_name'],project_desc=data['project_desc'],project_owner=data['project_owner'])
+            db.session.add(new_project)
+            db.session.commit()
+
+            return jsonify(new_project.id)
+
+    elif method == "delete":
+        if request.method == "POST":
+            project_id = json.loads(request.data)
+
+            project_to_delete = PROJECT_INFO.query.get(project_id['id'])
+            if not project_to_delete:
+                return jsonify({"user": "error-notfound"})
+            else:
+                db.session.delete(project_to_delete)
                 db.session.commit()
 
+                get_db_return = PROJECT_INFO.query.filter_by(id=project_id['id']).first()
+                if not get_db_return:
+                    return jsonify({"project": "deleted"})
+                else:
+                    get_db_return = get_db_return.to_dict()
+                    return jsonify(get_db_return)
 
-                return jsonify("add item successfully")
-        else:
-            return jsonify("add item failed")
 
 
 

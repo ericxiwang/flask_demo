@@ -1,6 +1,6 @@
 {
   "/api/v1/auth": {
-    "user_name": "admin@admin.com",
+    "email": "admin@admin.com",
     "user_password": "1234"
   },
   "/api/v1/project_info": {

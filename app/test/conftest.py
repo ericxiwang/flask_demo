@@ -13,7 +13,7 @@ def api_authentication(request):
         user_info_file = json.load(file)
     api_url = str(request.config.getoption("--base_url")) + str("/api/v1/auth")
     print("+++++++++++++++++++++++++++++++++",api_url)
-    payload = json.dumps({"user_name": user_info_file['/api/v1/auth']['user_name'],
+    payload = json.dumps({"email": user_info_file['/api/v1/auth']['email'],
                           "user_password": user_info_file['/api/v1/auth']['user_password']})
 
     headers = {

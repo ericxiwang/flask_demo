@@ -13,7 +13,7 @@ class USER_INFO(db.Model, UserMixin):
     group_id = db.Column(db.String(20),unique=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User_email %r>' % self.email
 
     def to_dict(self):
         return {
