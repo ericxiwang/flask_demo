@@ -148,7 +148,7 @@ def a_dashboard_edit(method):
             query_from_db.ticket_submitter = data['ticket_submitter']
 
             db.session.commit()
-            return jsonify(data)
+            return jsonify(query_from_db)
 
 
 
@@ -190,13 +190,12 @@ def all_user():
 
 
 
-
+###################################### project management #######################
 
 
 @flask_api.route('/project_list/<string:method>',methods=['POST'])
-def product_cate_edit(method):
+def project_management(method):
     print(method)
-
 
     if method == "query":
         project_list = []
@@ -208,9 +207,6 @@ def product_cate_edit(method):
             new_grid["project_desc"] = each_line.project_desc
             new_grid["project_owner"] = each_line.project_owner
             project_list.append(new_grid)
-        print(project_list)
-
-
 
         return jsonify(project_list)
     elif method == "add":
@@ -220,20 +216,32 @@ def product_cate_edit(method):
             db.session.add(new_project)
             db.session.commit()
 
-            return jsonify(new_project.id)
+            return jsonify({"new_project_id": new_project.id})
+
+    elif method == "edit":
+        if request.method == "POST":
+            data = json.loads(request.data)
+            edit_project = PROJECT_INFO.query.filter_by(id=int(data['project_id'])).first()
+            edit_project.project_name = data["project_name"]
+            edit_project.project_desc = data["project_desc"]
+            edit_project.project_owner = data["project_owner"]
+            db.session.add(edit_project)
+            db.session.commit()
+
+            return jsonify(edit_project.to_dict())
 
     elif method == "delete":
         if request.method == "POST":
             project_id = json.loads(request.data)
 
-            project_to_delete = PROJECT_INFO.query.get(project_id['id'])
+            project_to_delete = PROJECT_INFO.query.get(project_id['project_id'])
             if not project_to_delete:
-                return jsonify({"user": "error-notfound"})
+                return jsonify({"project": "error-notfound"})
             else:
                 db.session.delete(project_to_delete)
                 db.session.commit()
 
-                get_db_return = PROJECT_INFO.query.filter_by(id=project_id['id']).first()
+                get_db_return = PROJECT_INFO.query.filter_by(id=project_id['project_id']).first()
                 if not get_db_return:
                     return jsonify({"project": "deleted"})
                 else:

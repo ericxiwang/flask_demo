@@ -1,6 +1,5 @@
 import pytest, requests, json
 
-
 @pytest.mark.parametrize("test_case_name", ["/api/v1/project_info"])
 def test_api_project_info(test_case_name,api_authentication, base_url):
     api_url = base_url + test_case_name
@@ -177,10 +176,7 @@ def test_api_b_dashboard_new(test_case_name, api_authentication, base_url, proje
 def test_api_b_dashboard_edit(test_case_name, api_authentication, base_url,local_json_file):
     api_url = base_url + test_case_name
     get_template = local_json_file[test_case_name]
-    get_template['bug_title'] = get_template['bug_title']
-    get_template['bug_desc'] = get_template['bug_desc']
-    get_template['bug_status'] = get_template['bug_status']
-    get_template['bug_level'] = get_template['bug_level']
+
     all_pass = True
     for bug_id in share_bug_ids:
 
@@ -188,8 +184,52 @@ def test_api_b_dashboard_edit(test_case_name, api_authentication, base_url,local
         response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(get_template),verify=False)
         print(response.json())
         if (response.json()['bug_title'] != get_template['bug_title']
-                and response.json()['bug_desc'] != get_template['bug_desc']
-                and response.json()['bug_status'] != get_template['bug_status']
-                and response.json()['bug_level'] != get_template['bug_level']):
+                or response.json()['bug_desc'] != get_template['bug_desc']
+                or response.json()['bug_status'] != get_template['bug_status']
+                or response.json()['bug_level'] != get_template['bug_level']):
             all_pass = False
     assert all_pass
+
+
+######################## PROJECT_MANAGEMENT #############################
+@pytest.mark.project_management
+@pytest.mark.parametrize("test_case_name", ["/api/v1/project_list/query"])
+def test_api_project_list_query(test_case_name, api_authentication, base_url,local_json_file):
+    local_project_list = local_json_file[test_case_name]
+    api_url = base_url + test_case_name
+    response = requests.request("POST", api_url, headers=api_authentication,verify=False)
+    get_all_project_info = response.json()
+    assert json.dumps(local_project_list) == json.dumps(get_all_project_info)
+
+share_project_id={}
+@pytest.mark.project_management
+@pytest.mark.parametrize("test_case_name", ["/api/v1/project_list/add"])
+def test_api_project_list_add(test_case_name, api_authentication, base_url,local_json_file):
+    local_project_list = local_json_file[test_case_name]
+    api_url = base_url + test_case_name
+    response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(local_project_list), verify=False)
+    new_project_info = response.json()
+    assert new_project_info['new_project_id']
+    share_project_id["project_id"] = new_project_info['new_project_id']
+
+
+@pytest.mark.project_management
+@pytest.mark.parametrize("test_case_name", ["/api/v1/project_list/edit"])
+def test_api_project_list_edit(test_case_name, api_authentication, base_url,local_json_file):
+    local_project_list = local_json_file[test_case_name]
+    local_project_list["project_id"] = share_project_id["project_id"]
+    api_url = base_url + test_case_name
+    response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps(local_project_list), verify=False)
+
+    edit_project_info = response.json()
+    assert (edit_project_info['project_name'] == local_project_list['project_name']
+            and edit_project_info['project_desc'] == local_project_list['project_desc']
+            and edit_project_info['project_owner'] == local_project_list['project_owner'])
+
+@pytest.mark.project_management
+@pytest.mark.parametrize("test_case_name", ["/api/v1/project_list/delete"])
+def test_api_project_list_delete(test_case_name, api_authentication, base_url):
+
+    api_url = base_url + test_case_name
+    response = requests.request("POST", api_url, headers=api_authentication, data=json.dumps({"project_id":share_project_id["project_id"]}), verify=False)
+    assert response.json()["project"] == "deleted"

@@ -75,6 +75,16 @@ class PROJECT_INFO(db.Model):
     project_name = db.Column(db.String(50), unique=False, nullable=False)
     project_desc = db.Column(db.String(150), unique=False, nullable=False)
     project_owner = db.Column(db.String(50), unique=False, nullable=False)
+    def __repr__(self):
+        return '<Project updated %r>' % self.project_name
+    def to_dict(self):
+        return {
+
+            'project_id': self.id,
+            'project_name': self.project_name,
+            'project_desc': self.project_desc,
+            'project_owner':self.project_owner
+        }
 
 
 if __name__ == "__main__":

@@ -83,5 +83,37 @@
     "bug_level": "minor",
     "bug_category": "",
     "bug_project": ""
+  },
+  "/api/v1/project_list/query": [
+    {
+        "id": 1,
+        "project_desc": "React project",
+        "project_name": "frontend api",
+        "project_owner": "admin@admin.com"
+    },
+    {
+        "id": 2,
+        "project_desc": "Flask project",
+        "project_name": "backend api",
+        "project_owner": "admin@admin.com"
+    },
+    {
+        "id": 3,
+        "project_desc": "devops manifest",
+        "project_name": "devops",
+        "project_owner": "admin@admin.com"
+    }
+  ],
+
+  "/api/v1/project_list/add": {
+    "project_name":"new_add_project",
+    "project_desc": "new_add_project_desc",
+    "project_owner": "admin@admin.com"
+  },
+  "/api/v1/project_list/edit": {
+    "project_id": "0",
+    "project_name":"edit_project",
+    "project_desc": "edit_project_desc",
+    "project_owner": "admin@admin.com"
   }
 }
