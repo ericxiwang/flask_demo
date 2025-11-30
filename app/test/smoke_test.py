@@ -1,4 +1,6 @@
 import re
+import time
+
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 import pytest, re
@@ -63,8 +65,28 @@ def test_user_management_edit():
     page.get_by_role("spinbutton").click()
     page.get_by_role("spinbutton").fill("2")
     page.get_by_role("button", name="Save Changes").click()
-    #page.once("dialog", lambda dialog: dialog.dismiss())
-    #page.get_by_role("row", name="89 new-user-ed
+
+
+@pytest.mark.user_management
+@pytest.mark.parametrize("user_name,user_email",[("QA001","qa_engineer@test.com"),("new-user-edit","new-user@email.com")])
+def test_check_all_users(user_name,user_email):
+
+    get_user_name = page.locator("td", has_text=user_name)
+    get_user_email = page.locator("td",has_text=user_email)
+    assert get_user_name and get_user_email
+
+@pytest.mark.user_management
+@pytest.mark.parametrize("user_name,user_email",[("new-user-edit","new-user@email.com")])
+def test_user_management_delete(user_name,user_email):
+    delete_user_line = page.locator(f"//td[text()=\'{user_email}\']/following-sibling::td[2]")
+
+    print("+++++++++++++++++++",delete_user_line)
+    page.wait_for_timeout(3000)
+    delete_user_line.locator("//button[text()='Delete']").click()
+    page.wait_for_timeout(3000)
+
+    page.pause()
+def test_done():
     # ---------------------
     context.close()
     browser.close()
