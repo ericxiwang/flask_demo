@@ -1,0 +1,30 @@
+[
+    {
+        "email": "qa_engineer@test.com",
+        "group_id": 1,
+        "id": 1,
+        "user_name": "QA001",
+        "user_password": "1234"
+    },
+    {
+        "email": "admin@admin.com",
+        "group_id": 3,
+        "id": 2,
+        "user_name": "admin",
+        "user_password": "1234"
+    },
+    {
+        "email": "manager@gmail.com",
+        "group_id": 1,
+        "id": 3,
+        "user_name": "manager",
+        "user_password": "1234"
+    },
+    {
+        "email": "dev_engineer@test.com",
+        "group_id": 1,
+        "id": 4,
+        "user_name": "DEV001",
+        "user_password": "1234"
+    }
+]
