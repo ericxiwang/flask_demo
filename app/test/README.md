@@ -1,0 +1,1 @@
+#python3 -m pytest -v -rA -s <-m test_case_mark> <test_cases.py> --base-url=<test_url>
