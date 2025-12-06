@@ -22,7 +22,19 @@ page.get_by_placeholder("Enter username").press("Tab")
 page.get_by_placeholder("Enter password").fill("1234")
 page.get_by_role("button", name="Login").click()
 
+
+@pytest.mark.a_dashboard
+@pytest.mark.parametrize("ticket_status,ticket_quantity",[("new",8),("inprogress",5),("review",5),("done",5)])
+def test_a_dashboard_main_page(ticket_status,ticket_quantity):
+
+    page.get_by_role("link", name="Agile Dashboard").click()
+    page.wait_for_timeout(1000)
+    get_all_tickets = page.locator(f"[class*='custom-card-{ticket_status}']").count()
+
+    assert (get_all_tickets == ticket_quantity)
+@pytest.mark.a_dashboard
 def test_a_dashboard_new_ticket():
+
     page.get_by_role("button", name="+ CREATE NEW TICKEY +").click()
     page.locator("input[name=\"ticket_title\"]").click()
     page.locator("input[name=\"ticket_title\"]").fill("gui-new-ticket")
@@ -31,6 +43,7 @@ def test_a_dashboard_new_ticket():
     page.locator("form div").filter(has_text="User List-- Choose a User --").get_by_role("combobox").select_option("qa_engineer@test.com")
     page.get_by_role("button", name="Add Ticket").click()
 
+@pytest.mark.a_dashboard
 def test_a_dashboard_edit_ticket():
     page.locator("//div[text()='gui-new-ticket']/following-sibling::button[1]").click()
 
