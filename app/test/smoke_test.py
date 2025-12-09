@@ -53,17 +53,47 @@ def test_a_dashboard_edit_ticket():
     page.get_by_role("button", name="Save Changes").click()
     page.wait_for_timeout(1000)
     #page.locator("//div[text()='edit-title']/following-sibling::button[1]").click()
+
+
+################# USER MANAGEMENT TEST CASES   ######
 @pytest.mark.user_management
-def test_user_management_new():
+def test_user_management_all_users():
+    page.get_by_role("link", name="User Management").click()
+    page.wait_for_timeout(1500)
+    #page.wait_for_selector("//th[ha]")
+    get_all_users_by_edit_button = page.get_by_role('button', name='Edit' ).count()
+    print(get_all_users_by_edit_button)
+    assert (get_all_users_by_edit_button == 4)
+
+@pytest.mark.user_management
+@pytest.mark.parametrize("user_name,user_email",[("QA001","qa_engineer@test.com"),
+                                                 ("admin","admin@admin.com"),
+                                                 ("manager","manager@gmail.com"),
+                                                 ("DEV001","dev_engineer@test.com")])
+def test_check_gothrough_users(user_name,user_email):
+
+    get_user_name = page.locator("td", has_text=user_name)
+    get_user_email = page.locator("td",has_text=user_email)
+    assert (get_user_name and get_user_email)
+
+
+@pytest.mark.user_management
+@pytest.mark.parametrize("new_user_name,new_user_email",[("new-user","new-user@email.com")])
+def test_user_management_new(new_user_name,new_user_email):
     page.get_by_role("link", name="User Management").click()
     page.get_by_role("button", name="➕ Add User").click()
     page.locator("input[name=\"user_name\"]").click()
-    page.locator("input[name=\"user_name\"]").fill("new-user")
+    page.locator("input[name=\"user_name\"]").fill(new_user_name)
     page.locator("input[name=\"user_name\"]").press("Tab")
-    page.locator("input[name=\"email\"]").fill("new-user@email.com")
+    page.locator("input[name=\"email\"]").fill(new_user_email)
     page.locator("input[name=\"user_password\"]").click()
     page.locator("input[name=\"user_password\"]").fill("1234")
     page.get_by_role("button", name="Add", exact=True).click()
+
+@pytest.mark.user_management
+def test_user_management_check_new():
+    get_new_user_email_on_page = page.locator("td", has_text="new-user@email.com").inner_text()
+    assert (get_new_user_email_on_page == "new-user@email.com")
 
 @pytest.mark.user_management
 def test_user_management_edit():
@@ -81,26 +111,21 @@ def test_user_management_edit():
 
 
 @pytest.mark.user_management
-@pytest.mark.parametrize("user_name,user_email",[("QA001","qa_engineer@test.com"),("new-user-edit","new-user@email.com")])
-def test_check_all_users(user_name,user_email):
+@pytest.mark.parametrize("delete_user_name,delete_user_email",[("new-user-edit","new-user@email.com")])
+def test_user_management_delete(delete_user_name,delete_user_email):
+    new_user_line = page.locator("//td[text()='new-user@email.com']/following-sibling::td[2]")
+    new_user_line.locator("//button[text()='Edit']").click()
 
-    get_user_name = page.locator("td", has_text=user_name)
-    get_user_email = page.locator("td",has_text=user_email)
-    assert get_user_name and get_user_email
+    # print("======",get_new_user)
+    #
+    page.locator("input[name=\"user_name\"]").click()
+    page.locator("input[name=\"user_name\"]").fill("new-user-edit")
+    if page.locator("input[name='email']").input_value() == delete_user_email:
+        page.get_by_role("button", name="Delete").click()
+    page.wait_for_timeout(1000)
+    get_all_users_by_edit_button = page.get_by_role('button', name='Edit').count()
 
-@pytest.mark.user_management
-@pytest.mark.parametrize("user_name,user_email",[("new-user-edit","new-user@email.com")])
-def test_user_management_delete(user_name,user_email):
-    delete_user_line = page.locator(f"//td[text()=\'{user_email}\']/following-sibling::td[2]")
-
-    print("+++++++++++++++++++",delete_user_line)
-    page.wait_for_timeout(3000)
-    delete_user_line.locator("//button[text()='Delete']").click()
-    page.wait_for_timeout(3000)
-
-    page.pause()
-
-
+    assert (get_all_users_by_edit_button == 4)
 
 
 
