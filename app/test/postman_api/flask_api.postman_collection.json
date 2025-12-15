@@ -1,0 +1,2097 @@
+{
+	"info": {
+		"_postman_id": "27ba95d3-ff83-4d6b-a13c-11c09c32b9d1",
+		"name": "flask_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2850764",
+		"_collection_link": "https://qa-api-group.postman.co/workspace/flask_api_test~1b4ffd43-35e1-4c9b-ac2c-c0e5cbccdbae/collection/2850764-27ba95d3-ff83-4d6b-a13c-11c09c32b9d1?action=share&source=collection_link&creator=2850764"
+	},
+	"item": [
+		{
+			"name": "smoke_test",
+			"item": [
+				{
+					"name": "flask-server:/api/v1/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var get_Body = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", get_Body.access_token);\r",
+									"//access_token = get_Body.access_token;\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"user_list\", \"[100,300,500,700,900,1000,3000,3000,5000,7000,9000]\");\r",
+									"pm.collectionVariables.set(\"sort_list\", \"[999,777,888,555,666,333,111,222]\");\r",
+									"pm.collectionVariables.set(\"parentheses_string\", \"{{[[()]]}}{}[]()({)}\");\r",
+									"pm.collectionVariables.set(\"input_string\", \"AABCCDFFE\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/auth",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/sse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var get_Body = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", get_Body.access_token);\r",
+									"//access_token = get_Body.access_token;\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"user_list\", \"[100,300,500,700,900,1000,3000,3000,5000,7000,9000]\");\r",
+									"pm.collectionVariables.set(\"sort_list\", \"[999,777,888,555,666,333,111,222]\");\r",
+									"pm.collectionVariables.set(\"parentheses_string\", \"{{[[()]]}}{}[]()({)}\");\r",
+									"pm.collectionVariables.set(\"input_string\", \"AABCCDFFE\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/sse",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"sse"
+							],
+							"query": [
+								{
+									"key": "numberOfEvents",
+									"value": "5",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/project_list/query",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/project_list/query",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"project_list",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/project_list/add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var project_id = pm.response.json().new_project_id;\r",
+									"pm.collectionVariables.set(\"project_id\", project_id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"project_name\":\"test\",\r\n\"project_desc\": \"test_desc\",\r\n\"project_owner\": \"test_owner\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/project_list/add",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"project_list",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/project_list/edit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"project_id\": {{project_id}},\r\n\"project_name\": \"edit_project\",\r\n\"project_desc\": \"edit_project_desc\",\r\n\"project_owner\": \"admin@admin.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/project_list/edit",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"project_list",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/project_list/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"project_id\":{{project_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/project_list/delete",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"project_list",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/a_dashboard_main/",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ticket_title\":\"ticket_api_add_test\",\r\n    \"ticket_desc\":\"ticket_API_DDDDEEESSSSSSS\",\r\n    \"ticket_status\": \"new\",\r\n    \"ticket_assignee\": \"admin\",\r\n    \"ticket_type\": \"task\",\r\n    \"ticket_submitter\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/a_dashboard_main",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"a_dashboard_main"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/a_dashboard_main/new",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"ticket_id = pm.response.json().ticket_id\r",
+									"pm.test(\"Check if ticket_id is a number\", function () {\r",
+									"    pm.expect(ticket_id).to.be.a('number');\r",
+									"});\r",
+									"pm.test(\"Check if ticket_id is greater than 0\", function () {\r",
+									"    pm.expect(ticket_id).to.be.greaterThan(0);\r",
+									"});\r",
+									"pm.collectionVariables.set(\"ticket_id\", ticket_id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ticket_title\":\"ticket_api_add_test\",\r\n    \"ticket_desc\":\"ticket_API_DDDDEEESSSSSSS\",\r\n    \"ticket_status\": \"new\",\r\n    \"ticket_assignee\": \"admin@admin.com\",\r\n    \"ticket_type\": \"task\",\r\n    \"ticket_submitter\": \"admin\",\r\n    \"ticket_datetime\": \"Dec 29 2020\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/a_dashboard_ops/new",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"a_dashboard_ops",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/a_dashboard_main/edit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ticket_id\": {{ticket_id}},\r\n    \"ticket_title\":\"ticket_api_add_teshahahahaahahahahaht\",\r\n    \"ticket_desc\":\"ticket_API_DDDDEEESSSSSSS\",\r\n    \"ticket_status\": \"new\",   \r\n    \"ticket_type\": \"task\",\r\n    \"ticket_submitter\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/a_dashboard_ops/edit",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"a_dashboard_ops",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/a_dashboard_main/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ticket_id\": {{ticket_id}}\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/a_dashboard_ops/delete",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"a_dashboard_ops",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/b_dashboard_main",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key_words\":[\"front api\",\"backend api\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/b_dashboard_main",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"b_dashboard_main"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/b_dashboard_ops/new",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var bug_id = pm.response.json().ticket_id; // Extract the ticket_id from the response\r",
+									"pm.test(\"Check if ticket_id is a number\", function () {\r",
+									"    pm.expect(bug_id).to.be.a('number');\r",
+									"    });\r",
+									"pm.test(\"Check if ticket_id is greater than 0\", function () {\r",
+									"    pm.expect(bug_id).to.be.greaterThan(0);\r",
+									"    });\r",
+									"pm.collectionVariables.set(\"bug_id\", bug_id); // Store the ticket_id in a collection variable for future use"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bug_title\":\"ticket_api_add_test\",\r\n    \"bug_desc\":\"ticket_API_DDDDEEESSSSSSS\",\r\n    \"bug_status\": \"new\",\r\n    \"bug_assignee\": \"admin@admin.com\",\r\n    \"bug_level\": \"low\",\r\n    \"bug_category\": \"frontend\",\r\n    \"bug_datetime\": \"Tue Sep 30 2025\",\r\n    \"bug_project\": \"backend api\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/b_dashboard_ops/new",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"b_dashboard_ops",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/b_dashboard_ops/edit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bug_title\":\"edit_b_dashboard_title\",\r\n    \"bug_desc\":\"edit_test_b_dashboard_desc\",\r\n    \"bug_status\": \"inprogress\",\r\n    \"bug_assignee\": \"admin@admin.com\",\r\n    \"bug_level\": \"minor\",\r\n    \"bug_category\": \"frontend\",\r\n    \"bug_project\": \"devops\",\r\n    \"id\": {{bug_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/b_dashboard_ops/edit",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"b_dashboard_ops",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/b_dashboard_ops/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bug_id\":{{bug_id}}\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/b_dashboard_ops/delete",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"b_dashboard_ops",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/user_profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/user_profile",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"user_profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/user_ops/new",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var user_id = pm.response.json().id;\r",
+									"pm.test(\"User ID is not null\", function () {    \r",
+									"    pm.expect(user_id).to.not.be.null;\r",
+									"});\r",
+									"pm.test(\"User ID is a number\", function () {\r",
+									"    pm.expect(user_id).to.be.a('number');\r",
+									"});\r",
+									"pm.test(\"User ID is greater than 0\", function () {\r",
+									"    pm.expect(user_id).to.be.greaterThan(0);\r",
+									"});\r",
+									"pm.collectionVariables.set(\"user_id\", user_id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\":\"test\",\r\n    \"user_password\":\"1234\",\r\n    \"email\":\"email@email.com\",\r\n    \"group_id\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/user_ops/new",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"user_ops",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/user_ops/update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test_updateuser@email.com\", \r\n    \"group_id\": 2, \r\n    \"user_name\": \"test_updateuser\", \r\n    \"user_password\": \"1234\",\r\n    \"id\":{{user_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/user_ops/update",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"user_ops",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/user_ops/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":{{user_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/user_ops/delete",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"user_ops",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/user_ops/all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/user_ops/all",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"user_ops",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/a_workflow_badge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/a_workflow_badge",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"a_workflow_badge"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/a_workflow_ticketlist",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@admin.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/a_workflow_ticketlist/all",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"a_workflow_ticketlist",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "flask-server:/api/v1/project_info",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/project_info",
+							"protocol": "{{http_protocol}}",
+							"host": [
+								"{{flask-server-ip}}"
+							],
+							"port": "{{flask-server-port}}",
+							"path": [
+								"api",
+								"v1",
+								"project_info"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "flask-server:/api/v1/list_reverse_slice",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user_list\", \"[100,300,500,700,900,1000,3000,3000,5000,7000,9000]\");\r",
+							"pm.collectionVariables.set(\"sort_list\", \"[999,777,888,555,666,333,111,222]\");\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{user_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/list_reverse_slice",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"list_reverse_slice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/list_output",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"list_len\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/list_output",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"list_output"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/list_reverse_loop",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user_list\", \"[100,300,500,700,900,1000,3000,5000,7000,9000]\");\r",
+							"pm.collectionVariables.set(\"sort_list\", \"[999,777,888,555,666,333,111,222]\");\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{user_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/list_reverse_loop",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"list_reverse_loop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/list_comprehension",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_limit\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/list_comprehension",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"list_comprehension"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/list_find_duplicates",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{user_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/list_find_duplicates",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"list_find_duplicates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/list_topKFrequent",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"input_words\": {{user_list}},\r\n    \"input_k\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/list_topKFrequent",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"list_topKFrequent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/fib_loop",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_limit\": 9\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/fib_loop",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"fib_loop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/fib_recursion_2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_limit\": 9\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/fib_recursion_2",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"fib_recursion_2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/validate_ipv4_general",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"ipv4\": \"192.168.0.1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/validate_ipv4_general",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"validate_ipv4_general"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/validate_ipv4_regex",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"ipv4\": \"192.168.0.1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/validate_ipv4_regex",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"validate_ipv4_regex"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/validate_email_regex",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"email\": \"user_name@email.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/validate_email_regex",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"validate_email_regex"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/valid_parentheses_nostack",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"parentheses_string\": \"{{parentheses_string}}\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/valid_parentheses_nostack",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"valid_parentheses_nostack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/valid_parentheses_stack",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"parentheses_string\": \"{{parentheses_string}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/valid_parentheses_stack",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"valid_parentheses_stack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/search_insert",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"nums\": \"{{user_list}}\",\r\n    \"target\": 9999\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/search_insert",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"search_insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/merge_the_tools",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"input_string\": \"{{input_string}}\",\r\n    \"k\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/merge_the_tools",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"merge_the_tools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/two_sum_brute_force",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nums\": {{input_array}},\r\n    \"target\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/two_sum_brute_force",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"two_sum_brute_force"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/two_sum_hashmap",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nums\": {{input_array}},\r\n    \"target\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/two_sum_hashmap",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"two_sum_hashmap"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/selection_sort",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"result\");\r",
+							"});\r",
+							"\r",
+							"var get_Body = pm.response.json();\r",
+							"reversed_list = get_Body.result;\r",
+							"\r",
+							"\r",
+							"console.log(reversed_list);\r",
+							"\r",
+							"pm.test(\"check buble sort result\", function () {\r",
+							"    pm.expect(reversed_list).to.eql([111, 222, 333, 555, 666, 777, 888, 999]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{sort_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/selection_sort",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"selection_sort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/bubble_sort",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"result\");\r",
+							"});\r",
+							"\r",
+							"var get_Body = pm.response.json();\r",
+							"reversed_list = get_Body.result;\r",
+							"\r",
+							"\r",
+							"console.log(reversed_list);\r",
+							"\r",
+							"pm.test(\"check buble sort result\", function () {\r",
+							"    pm.expect(reversed_list).to.eql([111, 222, 333, 555, 666, 777, 888, 999]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{sort_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/bubble_sort",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"bubble_sort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/quick_sort",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"result\");\r",
+							"});\r",
+							"\r",
+							"var get_Body = pm.response.json();\r",
+							"reversed_list = get_Body.result;\r",
+							"\r",
+							"\r",
+							"console.log(reversed_list);\r",
+							"\r",
+							"pm.test(\"check quick sort result\", function () {\r",
+							"    pm.expect(reversed_list).to.eql([111, 222, 333, 555, 666, 777, 888, 999]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{sort_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/quick_sort",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"quick_sort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/build_in_sort",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"result\");\r",
+							"});\r",
+							"\r",
+							"var get_Body = pm.response.json();\r",
+							"reversed_list = get_Body.result;\r",
+							"\r",
+							"\r",
+							"console.log(reversed_list);\r",
+							"\r",
+							"pm.test(\"check build in sort result\", function () {\r",
+							"    pm.expect(reversed_list).to.eql([111, 222, 333, 555, 666, 777, 888, 999]);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\",\r\n    \"user_list\": {{sort_list}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/build_in_sort",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"build_in_sort"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1/smallest_factor",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user_list\", \"[100,300,500,700,900,1000,3000,5000,7000,9000]\");\r",
+							"pm.collectionVariables.set(\"sort_list\", \"[999,777,888,555,666,333,111,222]\");\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/smallest_factor/991",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"smallest_factor",
+						"991"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "flask-server:/api/v1ip_address_generator",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user_list\", \"[100,300,500,700,900,1000,3000,5000,7000,9000]\");\r",
+							"pm.collectionVariables.set(\"sort_list\", \"[999,777,888,555,666,333,111,222]\");\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\": \"{{user_name}}\",\r\n    \"user_password\": \"{{user_password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http_protocol}}://{{flask-server-ip}}:{{flask-server-port}}/api/v1/ip_address_generator",
+					"protocol": "{{http_protocol}}",
+					"host": [
+						"{{flask-server-ip}}"
+					],
+					"port": "{{flask-server-port}}",
+					"path": [
+						"api",
+						"v1",
+						"ip_address_generator"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "flask-server-port",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user_list",
+			"value": ""
+		},
+		{
+			"key": "sort_list",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "parentheses_string",
+			"value": ""
+		},
+		{
+			"key": "input_string",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "input_array",
+			"value": ""
+		},
+		{
+			"key": "project_id",
+			"value": ""
+		},
+		{
+			"key": "ticket_id",
+			"value": ""
+		},
+		{
+			"key": "bug_id",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		}
+	]
+}

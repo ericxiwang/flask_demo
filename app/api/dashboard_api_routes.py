@@ -148,7 +148,18 @@ def a_dashboard_edit(method):
             query_from_db.ticket_submitter = data['ticket_submitter']
 
             db.session.commit()
-            return jsonify(query_from_db)
+            return jsonify(query_from_db.id)
+    elif method == "delete":
+
+        print("delete current ticket")
+        if request.is_json:
+            data = request.get_json()
+
+            query_from_db = TICKET_INFO.query.filter_by(id=int(data['ticket_id'])).first()
+
+            db.session.delete(query_from_db)
+            db.session.commit()
+            return jsonify(query_from_db.id)
 
 
 

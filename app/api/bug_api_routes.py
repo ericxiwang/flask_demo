@@ -79,10 +79,15 @@ def b_dashboard_ops(method):
             query_from_db.bug_assignee = data['bug_assignee']
             query_from_db.bug_level = data['bug_level']
 
-
-
-
-
             db.session.commit()
             return jsonify(data)
+    elif method == "delete":
 
+        print("update bug ticket info")
+        if request.is_json:
+            data = request.get_json()
+
+            query_from_db = BUG_INFO.query.filter_by(id=int(data['bug_id'])).first()
+            db.session.delete(query_from_db)
+            db.session.commit()
+            return jsonify(data)
